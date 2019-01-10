@@ -3,11 +3,36 @@ require "faraday"
 require "json"
 
 require "pingity/version"
-require "pingity/api"
-require "pingity/report_on"
+require "pingity/report"
 
 module Pingity
-
   class Error < StandardError; end
-  # Your code goes here...
+
+  API_URL = "http://localhost:3000/api/v1/reports"
+  API_PUBLIC_KEY = ENV['PINGITY_ID']
+  API_SECRET_KEY = ENV['PINGITY_SECRET']
+
+  def self.url
+    @url || API_URL
+  end
+
+  def self.url=(url)
+    @url = url
+  end
+
+  def self.public_key
+    @public_key || API_PUBLIC_KEY
+  end
+
+  def self.public_key=(public_key)
+    @public_key = public_key
+  end
+
+  def self.secret_key
+    @secret_key || API_SECRET_KEY
+  end
+
+  def self.secret_key=(secret_key)
+    @secret_key = secret_key
+  end
 end

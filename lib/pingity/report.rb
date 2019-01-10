@@ -3,11 +3,11 @@ module Pingity
 
     attr_reader :result
 
-    def initialize(resource = nil, public_key: API_PUBLIC_KEY, secret_key: API_SECRET_KEY, url: API_URL)
+    def initialize(resource = nil, public_key: nil, secret_key: nil, url: nil)
       @resource = resource
-      @public_key = public_key
-      @secret_key = secret_key
-      @url = url
+      @public_key = public_key || Pingity.public_key
+      @secret_key = secret_key || Pingity.secret_key
+      @url = url || Pingity.url
 
       @result = JSON.parse((run_report).body)
     end
