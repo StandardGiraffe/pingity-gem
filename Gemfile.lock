@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    pingity (0.1.0)
+    pingity (0.2.0)
       dotenv (~> 2.6)
       faraday (~> 0.15)
 

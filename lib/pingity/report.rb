@@ -12,6 +12,18 @@ module Pingity
       @result = JSON.parse((run_report).body)
     end
 
+    def status
+      @result[0]["status"]["code"]
+    end
+
+    def passed?
+      self.status == "pass"
+    end
+
+    def failed?
+      self.status == "fail_critical"
+    end
+
   private
 
     def run_report
