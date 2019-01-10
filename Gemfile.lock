@@ -2,12 +2,14 @@ PATH
   remote: .
   specs:
     pingity (0.1.0)
+      dotenv (~> 2.6)
       faraday (~> 0.15)
 
 GEM
   remote: https://rubygems.org/
   specs:
     diff-lcs (1.3)
+    dotenv (2.6.0)
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
     multipart-post (2.0.0)

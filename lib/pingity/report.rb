@@ -22,7 +22,6 @@ module Pingity
         req.headers["Content-type"] = "application/json"
         req.params = { resource: @resource }
       end
-
     end
   end
 end
