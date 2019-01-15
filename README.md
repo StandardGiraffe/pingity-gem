@@ -1,8 +1,8 @@
 # Pingity
 
-Conduct a quick [Pingity](https://pingity.com) test on a website or email address using the API.
+Generates a [Pingity](https://pingity.com) report on a website or email address using the API.
 
-*Note:  Until deployment, the following instructions assume you're running the Pingity app locally, and link to `http://localhost:3000/...` rather than `https://www.pingity.com`.  Links will be updated when we go live.* 
+*Note:  Until deployment, the following instructions assume you're running the Pingity app locally, so all links point to `http://localhost:3000/...` rather than `https://www.pingity.com`.  Links will be updated when we go live.* 
 
 ## Installation
 
@@ -37,17 +37,17 @@ PINGITY_SECRET=<Your Pingity Secret here>
 website = Pingity::Report.new("example.com")
 email = Pingity::Report.new("garbage.email@missing.whatever")
 
-puts website.result   #=> { complete report hash }
-puts email.result     #=> { complete report hash }
+website.result   #=> { complete report hash }
+email.result     #=> { complete report hash }
 
-puts website.status   #=> "pass"
-puts email.status     #=> "fail_critical"
+website.status   #=> "pass"
+email.status     #=> "fail_critical"
 
-puts website.passed?  #=> true
-puts email.passed?    #=> false
+website.passed?  #=> true
+email.passed?    #=> false
 
-puts website.failed?  #=> false
-puts email.failed?    #=> true
+website.failed?  #=> false
+email.failed?    #=> true
 ```
 
 ### Advanced Usage and Edge Cases
@@ -55,11 +55,23 @@ puts email.failed?    #=> true
 You can initialize new `Pingity::Report`s with greater specificity, though this is normally unnecessary (and totally pointless at the time of this writing).
 
 `Pingity::Report.new` takes the following *optional* arguments:
-| Argument | Notes |
-|---|---|
+
+| **Argument** | **Notes** |
+|:---:|:---|
 | `:public_key` | Specifies an arbitrary Pingity ID |
 | `:secret_key` | Specifies an arbitrary Pingity Secret |
 | `:url` | Specifies an arbitrary API endpoint |
+
+So, for example:
+
+```ruby
+baz = Pingity.Report.new(
+  "example.com",
+  public_key: "blahblah",
+  secret_key: "flahflah",
+  url: "https://www.pingity.com/supersecretapi/"
+)
+```
 
 <!-- ## Contributing
 
