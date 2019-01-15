@@ -1,4 +1,4 @@
-# Pingity
+# Pingity [![Build Status](https://travis-ci.com/StandardGiraffe/pingity-gem.svg?branch=master)](https://travis-ci.com/StandardGiraffe/pingity-gem)
 
 Generates a [Pingity](https://pingity.com) report on a website or email address using the API.
 

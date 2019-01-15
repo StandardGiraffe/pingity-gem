@@ -1,9 +1,8 @@
 module Pingity
   class Report
-
     attr_reader :url
 
-    def initialize(resource = nil, public_key: nil, secret_key: nil, url: nil, eager: false)
+    def initialize(resource, public_key: nil, secret_key: nil, url: nil, eager: false)
       @resource = resource
       @public_key = public_key || Pingity.public_key
       @secret_key = secret_key || Pingity.secret_key
