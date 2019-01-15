@@ -1,19 +1,26 @@
 module Pingity
   class Report
 
-    attr_reader :result
+    attr_reader :url
 
-    def initialize(resource = nil, public_key: nil, secret_key: nil, url: nil)
+    def initialize(resource = nil, public_key: nil, secret_key: nil, url: nil, eager: false)
       @resource = resource
       @public_key = public_key || Pingity.public_key
       @secret_key = secret_key || Pingity.secret_key
-      @url = url || Pingity.url
 
-      @result = JSON.parse((run_report).body)
+      @url = url ? URI.join(API_URL_BASE, url) : Pingity.url
+
+      if eager
+        self.result
+      end
+    end
+
+    def results?
+      !!defined?(@result)
     end
 
     def status
-      @result[0]["status"]["code"]
+      self.result[0]["status"]["code"]
     end
 
     def passed?
@@ -24,15 +31,16 @@ module Pingity
       self.status == "fail_critical"
     end
 
-  private
+    def result
+      @result ||= begin
+        con = Faraday.new(url: @url)
+        con.basic_auth(@public_key, @secret_key)
 
-    def run_report
-      con = Faraday.new(url: @url)
-      con.basic_auth(@public_key, @secret_key)
-
-      con.post do |req|
-        req.headers["Content-type"] = "application/json"
-        req.params = { resource: @resource }
+        results = con.post do |req|
+          req.headers["Content-type"] = "application/json"
+          req.params = { resource: @resource }
+        end
+        JSON.parse((results).body)
       end
     end
   end

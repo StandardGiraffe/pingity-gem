@@ -1,6 +1,7 @@
 require "dotenv/load"
 require "faraday"
 require "json"
+require "uri"
 
 require "pingity/version"
 require "pingity/report"
@@ -8,7 +9,9 @@ require "pingity/report"
 module Pingity
   class Error < StandardError; end
 
-  API_URL = "https://pingity.com/api/v1/reports"
+  API_URL_BASE = ENV['PINGITY_API_BASE'] || "https://pingity.com/"
+  API_URL_ENDPOINT = "/api/v1/reports"
+  API_URL = URI.join(API_URL_BASE, API_URL_ENDPOINT).to_s.freeze
   API_PUBLIC_KEY = ENV['PINGITY_ID']
   API_SECRET_KEY = ENV['PINGITY_SECRET']
 

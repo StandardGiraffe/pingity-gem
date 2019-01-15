@@ -27,6 +27,8 @@ Add the following lines to your `./.env` file (or otherwise inject them into you
 ```
 PINGITY_ID=<Your Pingity ID here>
 PINGITY_SECRET=<Your Pingity Secret here>
+
+PINGITY_API_BASE=https://pingity.com
 ```
 
 ## Basic Usage
@@ -50,6 +52,8 @@ email.failed?    #=> true
 
 ### Advanced Usage and Edge Cases
 
+#### Report Arguments
+
 You can initialize new `Pingity::Report`s with greater specificity, though this is normally unnecessary (and totally pointless at the time of this writing).
 
 `Pingity::Report.new` takes the following *optional* arguments:
@@ -59,16 +63,25 @@ You can initialize new `Pingity::Report`s with greater specificity, though this 
 | `:public_key` | Specifies an arbitrary Pingity ID |
 | `:secret_key` | Specifies an arbitrary Pingity Secret |
 | `:url` | Specifies an arbitrary API endpoint |
+| `:eager` | if `true`, the report will be run on initialization (default is lazy).
 
 So, for example:
 
 ```ruby
-baz = Pingity.Report.new(
+baz = Pingity::Report.new(
   "example.com",
   public_key: "blahblah",
   secret_key: "flahflah",
-  url: "https://www.pingity.com/supersecretapi/"
+  url: "/supersecretapi/",
+  eager: true
 )
+```
+
+#### Operating the gem while developing Pingity
+
+If developing Pingity itself, you may still wish to rely on the Pingity gem.  To make API calls to your local machine rather than the website, switch the `PINGITY_API_BASE` variable from `https://pingity.com/` to your localhost in the `.env` file:
+```
+PINGITY_API_BASE=localhost:3000
 ```
 
 <!-- ## Contributing

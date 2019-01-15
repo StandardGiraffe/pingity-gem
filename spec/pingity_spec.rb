@@ -51,5 +51,34 @@ RSpec.describe Pingity do
         expect(invalid_web_report.failed?).to eq(true)
       end
     end
+
+    context "reports can take optional parameters", focus: true do
+      it "can accept an alternative api endpoint" do
+        report_a = Pingity::Report.new(
+          url: 'alternative/api/endpoint',
+        )
+
+        report_b = Pingity::Report.new(
+          url: 'https://pingity.com/alternative/api/endpoint',
+        )
+
+        expect(report_a.url.to_s).to eq("https://pingity.com/alternative/api/endpoint")
+        expect(report_b.url.to_s).to eq("https://pingity.com/alternative/api/endpoint")
+      end
+
+      it "can run a report eagerly" do
+        report_a = Pingity::Report.new(
+          "example.com",
+        )
+
+        report_b = Pingity::Report.new(
+          "example.com",
+          eager: true
+        )
+
+        expect(report_a.results?).to eq(false)
+        expect(report_b.results?).to eq(true)
+      end
+    end
   end
 end
