@@ -35,8 +35,8 @@ RSpec.describe Pingity do
       invalid_web_report = Pingity::Report.new("a08b2nb972n.tooth")
 
       it "as a resource subject" do
-        expect(valid_email_report.result).not_to be nil
-        expect(invalid_email_report.result).not_to be nil
+        expect(valid_web_report.result).not_to be nil
+        expect(invalid_web_report.result).not_to be nil
       end
 
       it "that register correct statuses" do
