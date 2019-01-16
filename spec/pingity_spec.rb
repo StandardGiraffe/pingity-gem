@@ -30,7 +30,7 @@ RSpec.describe Pingity do
       end
     end
 
-    context "with a web address" do
+    context "with a web address", oranges: true do
       valid_web_report = Pingity::Report.new("philomathy.org")
       invalid_web_report = Pingity::Report.new("a08b2nb972n.tooth")
 

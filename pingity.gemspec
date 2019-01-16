@@ -13,6 +13,7 @@ Gem::Specification.new do |spec|
   spec.description   = %q{Harness the groundbreaking and frankly heroic power of the Pingity resource analysis suite to validate new user emails during registration.}
   spec.homepage      = "https://github.com/StandardGiraffe/pingity-gem"
   spec.license       = "MIT"
+  spec.metadata["yard.run"] = "yri" # use "yard" to build full HTML docs.
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
   # to allow pushing to a single host or delete this section to allow pushing to any host.
@@ -42,4 +43,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 2.0"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.2"
+  spec.add_development_dependency "yard", "~> 0.9"
 end
