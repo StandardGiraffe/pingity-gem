@@ -4,6 +4,7 @@ module Pingity
   # @author Danny Fekete <danny@postageapp.com>
   class Report
     attr_reader :url
+    require 'time'
 
     #
     # Initializes a new Report object
@@ -47,7 +48,7 @@ module Pingity
     # @return [Time] Returns the time at which the result was run by Pingity.
     #
     def timestamp
-      Time.new(self.result[0]["timestamp"])
+      Time.parse(self.result[0]["timestamp"])
     end
 
     #
