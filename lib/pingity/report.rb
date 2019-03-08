@@ -33,6 +33,33 @@ module Pingity
     end
 
     #
+    # Checks the target of the report object.  (Runs the report if results are not already recorded.)
+    #
+    # @return [String] Returns the target URI against which the test was run.  The URI will have been canonized by Pingity at this point.
+    #
+    def target
+      self.result[0]["target"]
+    end
+
+    #
+    # Checks the timestamp of the report object.  (Runs the report if results are not already recorded.)
+    #
+    # @return [Time] Returns the time at which the result was run by Pingity.
+    #
+    def timestamp
+      Time.new(self.result[0]["timestamp"])
+    end
+
+    #
+    # Checks the resource type of the report object.  (Runs the report if results are not already recorded.)
+    #
+    # @return [String] Returns the resource type of the URI against which the test was run, as identified by Pingity.
+    #
+    def resource_type
+      self.result[0]["resource_type"]
+    end
+
+    #
     # Checks overall status of the report object.  (Runs the report if results are not already recorded.)
     # @return [String] Returns the overall status code of the report results.
     def status

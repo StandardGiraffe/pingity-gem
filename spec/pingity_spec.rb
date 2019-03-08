@@ -17,12 +17,27 @@ RSpec.describe Pingity do
         expect(invalid_email_report.result).not_to be nil
       end
 
-      it "that register correct statuses" do
+      it "that return correct statuses" do
         expect(valid_email_report.status).to eq("warning")
         expect(invalid_email_report.status).to eq("fail_critical")
       end
 
-      it "that respond correctly to .passed? and .failed? methods" do
+      it "that return a timestamp with the .timestamp getter" do
+        expect(valid_email_report.timestamp).to be_kind_of(Time)
+        expect(invalid_email_report.timestamp).to be_kind_of(Time)
+      end
+
+      it "that return a resource type with the .resource_type getter" do
+        expect(valid_email_report.resource_type).to eq("email")
+        expect(invalid_email_report.resource_type).to eq("email")
+      end
+
+      it "that return canonicized values with the .target getter" do
+        expect(valid_email_report.target).to eq("mailto:danny@postageapp.com")
+        expect(invalid_email_report.target).to eq("mailto:garbage.email@missing.whatever")
+      end
+
+      it "that respond correctly to .passed? and .failed? getter methods" do
         expect(valid_email_report.passed?).to eq(false)
         expect(valid_email_report.failed?).to eq(false)
         expect(invalid_email_report.passed?).to eq(false)
@@ -31,7 +46,7 @@ RSpec.describe Pingity do
     end
 
     context "with a web address", oranges: true do
-      valid_web_report = Pingity::Report.new("philomathy.org")
+      valid_web_report = Pingity::Report.new("postageapp.com")
       invalid_web_report = Pingity::Report.new("a08b2nb972n.tooth")
 
       it "as a resource subject" do
@@ -44,7 +59,22 @@ RSpec.describe Pingity do
         expect(invalid_web_report.status).to eq("fail_critical")
       end
 
-      it "that respond correctly to .passed? and .failed? methods" do
+      it "that return canonicized values with the .target getter" do
+        expect(valid_web_report.target).to eq("http://postageapp.com")
+        expect(invalid_web_report.target).to eq("http://a08b2nb972n.tooth")
+      end
+
+      it "that return a timestamp with the .timestamp getter" do
+        expect(valid_web_report.timestamp).to be_kind_of(Time)
+        expect(invalid_web_report.timestamp).to be_kind_of(Time)
+      end
+
+      it "that return a resource type with the .resource_type getter" do
+        expect(valid_web_report.resource_type).to eq("website")
+        expect(invalid_web_report.resource_type).to eq("website")
+      end
+
+      it "that respond correctly to .passed? and .failed? getter methods" do
         expect(valid_web_report.passed?).to eq(true)
         expect(valid_web_report.failed?).to eq(false)
         expect(invalid_web_report.passed?).to eq(false)
@@ -59,7 +89,7 @@ RSpec.describe Pingity do
           url: 'alternative/api/endpoint'
         )
 
-        expect(report_a.url.to_s).to eq("https://pingity.com/alternative/api/endpoint")
+        expect(report_a.url.to_s).to eq("#{ENV['PINGITY_API_BASE']}alternative/api/endpoint")
 
         report_b = Pingity::Report.new(
           "example.com",
