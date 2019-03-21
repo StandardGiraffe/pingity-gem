@@ -114,4 +114,8 @@ RSpec.describe Pingity do
       end
     end
   end
+
+  context "can output errors correctly" do
+    # TODO
+  end
 end

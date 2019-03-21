@@ -89,12 +89,59 @@ module Pingity
         con = Faraday.new(url: @url)
         con.basic_auth(@public_key, @secret_key)
 
-        results = con.post do |req|
+        res = con.post do |req|
           req.headers["Content-type"] = "application/json"
           req.params = { resource: @resource }
         end
-        JSON.parse((results).body)
+
+        # response_interrogator(res)
+
+        case res.status
+        when 500
+          raise Pingity::InternalServerError, "Request could not be processed."
+        when 401
+          raise Pingity::CredentialsError, "Submitted credentials were rejected."
+        when 200
+          case res.headers["Content-type"].to_s.split(';').first
+          when "application/json"
+            JSON.parse(res.body)
+          else
+            raise Pingity::UnexpectedResponseContentError, "Service returned unexpected content type: #{res.headers["Content-type"]}"
+          end
+        else
+          raise response_as_exception(res)
+        end
+
+      rescue Faraday::ConnectionFailed => e
+        raise Pingity::ServiceUnreachableError, "Unable to reach the API at the requested endpoint: #{Pingity::API_URL}; #{e.message}"
       end
+    end
+
+  protected
+
+    # @!visibility private
+    def response_as_exception(res)
+      case res.headers["Content-type"].to_s.split(';').first
+      when "application/json"
+        body = JSON.parse(res.body)
+
+        # case on body content when examples arise.  Until then...
+        Pingity::NoStatusCodeGivenError.new("(Until specific cases arise...) No status code was given in the API call response.  Weird.")
+      else
+        Pingity::UnexpectedResponseContentError.new("Service returned unexpected content type: #{res.headers["Content-type"]}")
+      end
+    end
+
+    # @!visibility private
+    def response_interrogator(res)
+      puts "*****************************"
+      puts "Response code:"
+      p res.status
+      puts "Response headers:"
+      p res.headers
+      puts "Response body:"
+      p res.body
+      puts "*****************************"
     end
   end
 end

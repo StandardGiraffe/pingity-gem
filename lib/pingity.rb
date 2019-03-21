@@ -13,7 +13,23 @@ require "pingity/report"
 #
 module Pingity
   # @!visibility private
-  class Error < StandardError; end
+  # Pingity Gem was unable to reach the API at the requested endpoint.  The service might be down or, if a manual endpoint was used, it might be configured incorrectly.
+  class ServiceUnreachableError < StandardError; end
+
+  # @!visibility private
+  # The credentials submitted by the Pingity Gem were rejected by Pingity; please double-check your .env file and ensure PINGITY_ID and PINGITY_SECRET match your API key's 'ID' and 'Secret' respectively.
+  class CredentialsError < StandardError; end
+
+  # @!visibility private
+  # The request crashes the server.  Stop it.
+  class InternalServerError < StandardError; end
+
+  # @!visibility private
+  # The server returns a non-JSON object that isn't otherwise caught by its status code.
+  class UnexpectedResponseContentError < StandardError; end
+
+  # @!visibility private
+  class NoStatusCodeGivenError < StandardError; end
 
   # @!visibility private
   API_URL_BASE = ENV['PINGITY_API_BASE'] || "https://pingity.com/"
